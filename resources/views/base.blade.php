@@ -12,6 +12,16 @@
 
     <div class="container mt-4">
         <div class="row">
+            <div>
+                @if($errors->any())
+                <b>Por favor, verifique o erros abaixo</b>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{$error}}</li>
+                    @endforeach
+                </ul>
+                @endif
+            </div>
             @yield('conteudo')
         </div>
     </div>

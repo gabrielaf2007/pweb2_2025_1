@@ -4,19 +4,19 @@
 
     <h3>Formulário aluno</h3>
 
-    <table>
-        <thead>
-            <tr>
-                <td>ID</td>
-                <td>Nome</td>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td>Teste</td>
-            </tr>
-        </tbody>
-    </table>
+    <form action="{{route('aluno.store')}}" method="post">
+        @csrf
+
+        <label for="">Nome</label><br>
+        <input type="text" name="nome"><br>
+
+        <label for="">CPF</label><br>
+        <input type="text" name="cpf"><br>
+
+        <label for="">Telefone</label><br>
+        <input type="text" name="telefone"><br>
+
+        <button type="submit">Salvar</button>
+    </form>
 
 @stop
