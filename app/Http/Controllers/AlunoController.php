@@ -12,7 +12,13 @@ class AlunoController extends Controller
      */
     public function index()
     {
-      return view('aluno.list');
+        //select * from alunos
+        $dados = Aluno::All();
+
+        return view(
+            'aluno.list',
+            ['dados' => $dados]
+        );
     }
 
     /**
@@ -29,24 +35,23 @@ class AlunoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nome'=>'required|min:3|max:100',
-            'cpf'=>'required|max:14',
-            'telefone'=>'required|min:10|max:40'
-        ],[
-            'nome.required'=>'0 :attribute é obrigatório',
-            'cpf.required'=>'0 :attribute é obrigatório',
+            'nome' => 'required|min:3|max:100',
+            'cpf' => 'required|max:14',
+            'telefone' => 'nullable|min:10|max:40'
+        ], [
+            'nome.required' => 'O :attribute é obrigatório',
+            'cpf.required' => 'O :attribute é obrigatório',
         ]);
 
         $data = [
-            'nome'=>$request->nome,
-            'cpf'=>$request->cpf,
-            'telefone'=>$request->telefone,
+            'nome' => $request->nome,
+            'cpf' => $request->cpf,
+            'telefone' => $request->telefone,
         ];
 
         Aluno::create($data);
 
-        redirect('aluno');
-
+        return redirect('aluno');
     }
 
     /**
@@ -62,7 +67,12 @@ class AlunoController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $dado = Aluno::findOrFail($id);
+
+        return view(
+            'aluno.form',
+            ['dado' => $dado]
+        );
     }
 
     /**
@@ -70,7 +80,27 @@ class AlunoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'nome' => 'required|min:3|max:100',
+            'cpf' => 'required|max:14',
+            'telefone' => 'nullable|min:10|max:40'
+        ], [
+            'nome.required' => 'O :attribute é obrigatório',
+            'cpf.required' => 'O :attribute é obrigatório',
+        ]);
+
+        $data = [
+            'nome' => $request->nome,
+            'cpf' => $request->cpf,
+            'telefone' => $request->telefone,
+        ];
+
+        Aluno::updateOrCreate(
+            ['id' => $id],
+            $data
+        );
+
+        return redirect('aluno');
     }
 
     /**
@@ -78,6 +108,29 @@ class AlunoController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        //  dd("teste");
+        $dado = Aluno::find($id);
+
+        $dado->delete();
+
+        return redirect('aluno');
+    }
+    public function search(Request $request)
+    {
+        if(!empty($request->valor)){
+            $dados = Aluno::where(
+                $request->tipo,
+                'like',
+                "%$request->valor%"
+            )->get();
+        }else{
+            $dados = Aluno::all();
+        }
+
+        return view(
+            'aluno.list',
+            ['dados' => $dados]
+        );
     }
 }
+
