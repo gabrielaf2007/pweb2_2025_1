@@ -28,6 +28,17 @@
         <label for="">Telefone</label><br>
         <input type="text" name="telefone" value="{{old('telefone', $dado->telefone ?? '' )}}"><br>
 
+        <label for="">Categoria</label><br>
+        <select name="categoria_id">
+            @foreach ($categorias as $categoria)
+                <option value="{{$categoria->id}}"
+            {{old('categoria_id',$dado->$categoria_id ?? '')
+            |== $categoria->id ? 'selected' : ''}}>
+            {{$categoria->nome}}
+            </option>
+            @endforeach
+        </select>
+
         <button type="submit">Salvar</button><br>
         <a href="{{ url('aluno') }}">Voltar</a>
 
